@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Happy Dashain - Greeting Card</title>
+    <style>
+      :root {
+        --background: linear-gradient(135deg, #fff7e6 0%, #fff0f0 40%, #fffef9 100%);
+        --accent: #b8860b;
+        --deep: #5a2a0c;
+        --card-background: rgba(255, 255, 255, 0.85);
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: var(--background);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .card {
+        background: var(--card-background);
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        padding: 40px;
+        text-align: center;
+        max-width: 400px;
+        animation: float 3s ease-in-out infinite;
+        position: relative;
+        z-index: 2;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+      }
+
+      h1 {
+        color: var(--deep);
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+
+      p {
+        color: #333;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+      }
+
+      .button {
+        background-color: var(--accent);
+        color: white;
+        padding: 12px 25px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      }
+
+      /* Sparkles */
+      .sparkles {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background: var(--accent);
+        border-radius: 50%;
+        animation: sparkle 2s linear infinite;
+      }
+
+      @keyframes sparkle {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        50% { transform: translateY(-50px) scale(1.5); opacity: 0.5; }
+        100% { transform: translateY(0) scale(1); opacity: 1; }
+      }
+
+      /* Petals */
+      .petal {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #ff4500;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: petalFall linear infinite;
+      }
+
+      @keyframes petalFall {
+        0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+      }
+
+      /* Diya lamps */
+      .diya {
+        position: absolute;
+        bottom: 20px;
+        width: 20px;
+        height: 20px;
+        background: orange;
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        box-shadow: 0 0 15px yellow;
+        animation: flicker 1s infinite alternate;
+      }
+
+      @keyframes flicker {
+        0% { box-shadow: 0 0 10px yellow; transform: scaleY(1); }
+        50% { box-shadow: 0 0 20px yellow; transform: scaleY(1.1); }
+        100% { box-shadow: 0 0 12px yellow; transform: scaleY(0.95); }
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Happy Dashain!</h1>
+      <p>May this Dashain bring joy, prosperity, and happiness to you and your family.</p>
+      <button class="button" onclick="alert('Wishing you a very Happy Dashain!')">Send Greetings</button>
+    </div>
+
+    <script>
+      // Sparkle effect
+      for(let i=0; i<30; i++){
+        let sparkle = document.createElement('div');
+        sparkle.className = 'sparkles';
+        sparkle.style.left = Math.random() * window.innerWidth + 'px';
+        sparkle.style.top = Math.random() * window.innerHeight + 'px';
+        sparkle.style.animationDuration = 1 + Math.random() * 2 + 's';
+        document.body.appendChild(sparkle);
+      }
+
+      // Petal effect
+      for(let i=0; i<20; i++){
+        let petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.style.left = Math.random() * window.innerWidth + 'px';
+        petal.style.animationDuration = 5 + Math.random() * 5 + 's';
+        petal.style.width = 5 + Math.random()*10 + 'px';
+        petal.style.height = 5 + Math.random()*10 + 'px';
+        document.body.appendChild(petal);
+      }
+
+      // Diya lamps
+      let diyaCount = 5;
+      for(let i=0; i<diyaCount; i++){
+        let diya = document.createElement('div');
+        diya.className = 'diya';
+        diya.style.left = (i * 80 + 50) + 'px';
+        document.body.appendChild(diya);
+      }
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
