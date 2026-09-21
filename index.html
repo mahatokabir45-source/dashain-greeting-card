@@ -1,172 +1,925 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Happy Dashain - Greeting Card</title>
-    <style>
-      :root {
-        --background: linear-gradient(135deg, #fff7e6 0%, #fff0f0 40%, #fffef9 100%);
-        --accent: #b8860b;
-        --deep: #5a2a0c;
-        --card-background: rgba(255, 255, 255, 0.85);
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>For You ❤️</title>
 
-      body {
-        margin: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background: var(--background);
-        overflow: hidden;
-        position: relative;
-      }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-      .card {
-        background: var(--card-background);
-        border-radius: 20px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        padding: 40px;
-        text-align: center;
-        max-width: 400px;
-        animation: float 3s ease-in-out infinite;
-        position: relative;
-        z-index: 2;
-      }
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Georgia,"Times New Roman",serif;
+    background:#020006;
+    color:white;
+}
 
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-15px); }
-      }
+/* =========================
+   CANVAS
+========================= */
 
-      h1 {
-        color: var(--deep);
-        font-size: 2rem;
-        margin-bottom: 20px;
-      }
+canvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+}
 
-      p {
-        color: #333;
-        font-size: 1.1rem;
-        margin-bottom: 30px;
-      }
+/* =========================
+   MAIN UI
+========================= */
 
-      .button {
-        background-color: var(--accent);
-        color: white;
-        padding: 12px 25px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
+.screen{
+    position:fixed;
+    inset:0;
+    z-index:5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    pointer-events:none;
+}
 
-      .button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      }
+.content{
+    width:min(900px,90%);
+}
 
-      /* Sparkles */
-      .sparkles {
-        position: absolute;
-        width: 5px;
-        height: 5px;
-        background: var(--accent);
-        border-radius: 50%;
-        animation: sparkle 2s linear infinite;
-      }
+.small{
+    font-family:Arial,sans-serif;
+    letter-spacing:5px;
+    text-transform:uppercase;
+    font-size:12px;
+    color:#ff9fbd;
+    opacity:0;
+    animation:fadeIn 2s 1s forwards;
+}
 
-      @keyframes sparkle {
-        0% { transform: translateY(0) scale(1); opacity: 1; }
-        50% { transform: translateY(-50px) scale(1.5); opacity: 0.5; }
-        100% { transform: translateY(0) scale(1); opacity: 1; }
-      }
+h1{
+    margin-top:20px;
+    font-size:clamp(42px,8vw,100px);
+    line-height:.95;
+    font-weight:500;
+    letter-spacing:-3px;
+    background:linear-gradient(
+        90deg,
+        #fff,
+        #ffb3ca,
+        #fff,
+        #ff5d91,
+        #fff
+    );
+    background-size:300% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:
+        titleAppear 2s ease forwards,
+        shine 5s linear infinite;
+}
 
-      /* Petals */
-      .petal {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background: #ff4500;
-        border-radius: 50%;
-        opacity: 0.8;
-        animation: petalFall linear infinite;
-      }
+.subtitle{
+    margin-top:25px;
+    font-family:Arial,sans-serif;
+    font-size:clamp(14px,2vw,20px);
+    letter-spacing:3px;
+    color:#ffd9e5;
+    opacity:0;
+    animation:fadeIn 2s 2s forwards;
+}
 
-      @keyframes petalFall {
-        0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-        100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-      }
+/* =========================
+   BUTTON
+========================= */
 
-      /* Diya lamps */
-      .diya {
-        position: absolute;
-        bottom: 20px;
-        width: 20px;
-        height: 20px;
-        background: orange;
-        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-        box-shadow: 0 0 15px yellow;
-        animation: flicker 1s infinite alternate;
-      }
+.start{
+    pointer-events:auto;
+    margin-top:45px;
+    padding:16px 35px;
+    border:1px solid rgba(255,150,180,.5);
+    border-radius:50px;
+    background:rgba(255,40,100,.08);
+    color:white;
+    font-size:14px;
+    letter-spacing:3px;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    box-shadow:
+        0 0 25px rgba(255,40,100,.15),
+        inset 0 0 20px rgba(255,255,255,.03);
+    transition:.4s;
+    opacity:0;
+    animation:fadeIn 2s 3s forwards;
+}
 
-      @keyframes flicker {
-        0% { box-shadow: 0 0 10px yellow; transform: scaleY(1); }
-        50% { box-shadow: 0 0 20px yellow; transform: scaleY(1.1); }
-        100% { box-shadow: 0 0 12px yellow; transform: scaleY(0.95); }
-      }
+.start:hover{
+    transform:scale(1.08);
+    background:rgba(255,40,100,.2);
+    box-shadow:
+        0 0 40px rgba(255,40,100,.45);
+}
 
-    </style>
-  </head>
-  <body>
-    <div class="card">
-      <h1>Happy Dashain!</h1>
-      <p>May this Dashain bring joy, prosperity, and happiness to you and your family.</p>
-      <button class="button" onclick="alert('Wishing you a very Happy Dashain!')">Send Greetings</button>
+/* =========================
+   LOVE LETTER
+========================= */
+
+.letter{
+    position:fixed;
+    inset:0;
+    z-index:20;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(2,0,6,.75);
+    backdrop-filter:blur(15px);
+    opacity:0;
+    visibility:hidden;
+    transition:1s;
+    padding:25px;
+}
+
+.letter.show{
+    opacity:1;
+    visibility:visible;
+}
+
+.paper{
+    position:relative;
+    width:min(600px,100%);
+    padding:50px 40px;
+    border:1px solid rgba(255,150,180,.25);
+    border-radius:25px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.08),
+            rgba(255,30,90,.05)
+        );
+    box-shadow:
+        0 0 80px rgba(255,20,90,.2),
+        inset 0 0 50px rgba(255,255,255,.02);
+    transform:scale(.7) rotateX(20deg);
+    transition:1s cubic-bezier(.2,.8,.2,1);
+}
+
+.letter.show .paper{
+    transform:scale(1) rotateX(0);
+}
+
+.paper h2{
+    font-size:38px;
+    color:#ff9db9;
+    margin-bottom:25px;
+}
+
+.paper p{
+    font-family:Arial,sans-serif;
+    line-height:1.9;
+    color:#ffe8ef;
+    font-size:16px;
+}
+
+.close{
+    pointer-events:auto;
+    margin-top:30px;
+    padding:10px 25px;
+    border-radius:30px;
+    border:1px solid #ff6f9c55;
+    background:#ff356b18;
+    color:white;
+    cursor:pointer;
+}
+
+/* =========================
+   FINAL MESSAGE
+========================= */
+
+.final{
+    position:fixed;
+    inset:0;
+    z-index:15;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    pointer-events:none;
+    opacity:0;
+    transition:2s;
+}
+
+.final.show{
+    opacity:1;
+}
+
+.final h2{
+    font-size:clamp(40px,8vw,100px);
+    color:white;
+    text-shadow:
+        0 0 15px #ff3976,
+        0 0 50px #ff3976,
+        0 0 100px #ff3976;
+}
+
+.final p{
+    margin-top:20px;
+    color:#ffc9d9;
+    font-family:Arial,sans-serif;
+    letter-spacing:3px;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes fadeIn{
+    to{opacity:1}
+}
+
+@keyframes titleAppear{
+    from{
+        opacity:0;
+        transform:translateY(40px) scale(.9);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+@keyframes shine{
+    to{
+        background-position:300% center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<!-- MAIN SCREEN -->
+
+<div class="screen" id="home">
+    <div class="content">
+
+        <div class="small">
+            A little universe made for you
+        </div>
+
+        <h1>For My Love ❤️</h1>
+
+        <div class="subtitle">
+            Some feelings are too beautiful for words.
+        </div>
+
+        <button class="start" onclick="openHeart()">
+            OPEN MY HEART ✦
+        </button>
+
+    </div>
+</div>
+
+
+<!-- LOVE LETTER -->
+
+<div class="letter" id="letter">
+
+    <div class="paper">
+
+        <h2>To You ❤️</h2>
+
+        <p>
+            I don't need a thousand reasons to love you.
+            Somehow, my heart already knows.
+            <br><br>
+
+            In a world full of moments,
+            meeting you became one of my favorite ones.
+            <br><br>
+
+            So this little universe is for you —
+            every glowing particle,
+            every little heart,
+            and every heartbeat.
+            <br><br>
+
+            You are not just a part of my story.
+            You are one of the most beautiful chapters.
+        </p>
+
+        <button class="close" onclick="closeLetter()">
+            KEEP GOING ❤️
+        </button>
+
     </div>
 
-    <script>
-      // Sparkle effect
-      for(let i=0; i<30; i++){
-        let sparkle = document.createElement('div');
-        sparkle.className = 'sparkles';
-        sparkle.style.left = Math.random() * window.innerWidth + 'px';
-        sparkle.style.top = Math.random() * window.innerHeight + 'px';
-        sparkle.style.animationDuration = 1 + Math.random() * 2 + 's';
-        document.body.appendChild(sparkle);
-      }
+</div>
 
-      // Petal effect
-      for(let i=0; i<20; i++){
-        let petal = document.createElement('div');
-        petal.className = 'petal';
-        petal.style.left = Math.random() * window.innerWidth + 'px';
-        petal.style.animationDuration = 5 + Math.random() * 5 + 's';
-        petal.style.width = 5 + Math.random()*10 + 'px';
-        petal.style.height = 5 + Math.random()*10 + 'px';
-        document.body.appendChild(petal);
-      }
 
-      // Diya lamps
-      let diyaCount = 5;
-      for(let i=0; i<diyaCount; i++){
-        let diya = document.createElement('div');
-        diya.className = 'diya';
-        diya.style.left = (i * 80 + 50) + 'px';
-        document.body.appendChild(diya);
-      }
-    </script>
-  </body>
+<!-- FINAL -->
+
+<div class="final" id="final">
+
+    <div>
+        <h2>Forever & Always ❤️</h2>
+
+        <p>
+            YOU + ME · ONE BEAUTIFUL STORY
+        </p>
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   SETUP
+===================================================== */
+
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+
+let W=innerWidth;
+let H=innerHeight;
+let DPR=devicePixelRatio||1;
+
+canvas.width=W*DPR;
+canvas.height=H*DPR;
+
+ctx.scale(DPR,DPR);
+
+window.addEventListener("resize",()=>{
+
+    W=innerWidth;
+    H=innerHeight;
+
+    DPR=devicePixelRatio||1;
+
+    canvas.width=W*DPR;
+    canvas.height=H*DPR;
+
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+
+    createHeart();
+
+});
+
+
+/* =====================================================
+   STARS
+===================================================== */
+
+const stars=[];
+
+for(let i=0;i<450;i++){
+
+    stars.push({
+
+        x:Math.random()*W,
+
+        y:Math.random()*H,
+
+        r:Math.random()*1.5+.2,
+
+        alpha:Math.random(),
+
+        speed:Math.random()*.015+.003
+
+    });
+
+}
+
+
+/* =====================================================
+   HEART PARTICLES
+===================================================== */
+
+let heart=[];
+
+function heartEquation(t){
+
+    return {
+
+        x:
+        16*Math.pow(Math.sin(t),3),
+
+        y:
+        -(13*Math.cos(t)
+        -5*Math.cos(2*t)
+        -2*Math.cos(3*t)
+        -Math.cos(4*t))
+
+    };
+
+}
+
+
+function createHeart(){
+
+    heart=[];
+
+    const scale=Math.min(W,H)/43;
+
+    const amount=Math.min(
+        5500,
+        Math.floor(W*H/140)
+    );
+
+    for(let i=0;i<amount;i++){
+
+        const t=Math.random()*Math.PI*2;
+
+        const p=heartEquation(t);
+
+        const fill=Math.sqrt(Math.random());
+
+        heart.push({
+
+            x:W/2+p.x*scale*fill,
+
+            y:H/2+p.y*scale*fill,
+
+            baseX:p.x*scale*fill,
+
+            baseY:p.y*scale*fill,
+
+            size:.4+Math.random()*1.7,
+
+            phase:Math.random()*Math.PI*2,
+
+            speed:.5+Math.random()*2,
+
+            alpha:.25+Math.random()*.75
+
+        });
+
+    }
+
+}
+
+createHeart();
+
+
+/* =====================================================
+   FLOATING HEARTS
+===================================================== */
+
+const floating=[];
+
+function addFloating(){
+
+    floating.push({
+
+        x:Math.random()*W,
+
+        y:H+30,
+
+        size:8+Math.random()*20,
+
+        speed:.4+Math.random()*1.5,
+
+        drift:(Math.random()-.5)*.7,
+
+        life:1,
+
+        rotation:Math.random()*Math.PI
+
+    });
+
+}
+
+setInterval(addFloating,300);
+
+
+/* =====================================================
+   SHOOTING STARS
+===================================================== */
+
+const meteors=[];
+
+function meteor(){
+
+    meteors.push({
+
+        x:Math.random()*W,
+
+        y:Math.random()*H*.5,
+
+        length:80+Math.random()*150,
+
+        speed:8+Math.random()*10,
+
+        life:1
+
+    });
+
+}
+
+setInterval(meteor,1700);
+
+
+/* =====================================================
+   EXPLOSION PARTICLES
+===================================================== */
+
+const explosions=[];
+
+function explosion(x,y){
+
+    for(let i=0;i<180;i++){
+
+        const angle=Math.random()*Math.PI*2;
+
+        const speed=1+Math.random()*8;
+
+        explosions.push({
+
+            x:x,
+
+            y:y,
+
+            vx:Math.cos(angle)*speed,
+
+            vy:Math.sin(angle)*speed,
+
+            life:1,
+
+            size:1+Math.random()*4
+
+        });
+
+    }
+
+}
+
+
+/* =====================================================
+   DRAW HEART
+===================================================== */
+
+function drawHeart(time){
+
+    const pulse=
+        1+
+        Math.sin(time*.0025)*.035;
+
+    for(const p of heart){
+
+        const wave=
+            Math.sin(
+                time*.002*p.speed+p.phase
+            )*1.5;
+
+        const x=
+            W/2+
+            p.baseX*pulse+
+            wave;
+
+        const y=
+            H/2+
+            p.baseY*pulse+
+            wave;
+
+        const a=
+            p.alpha*
+            (.65+
+            Math.sin(
+                time*.003+p.phase
+            )*.35);
+
+        ctx.beginPath();
+
+        ctx.fillStyle=
+            `rgba(255,45,105,${a})`;
+
+        ctx.shadowBlur=15;
+
+        ctx.shadowColor="#ff1765";
+
+        ctx.arc(
+            x,
+            y,
+            p.size,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+    ctx.shadowBlur=0;
+}
+
+
+/* =====================================================
+   DRAW FLOATING HEART
+===================================================== */
+
+function miniHeart(x,y,size,alpha){
+
+    ctx.save();
+
+    ctx.translate(x,y);
+
+    ctx.scale(size/20,size/20);
+
+    ctx.beginPath();
+
+    ctx.moveTo(0,8);
+
+    ctx.bezierCurveTo(
+        -18,-3,
+        -11,-15,
+        0,-8
+    );
+
+    ctx.bezierCurveTo(
+        11,-15,
+        18,-3,
+        0,8
+    );
+
+    ctx.fillStyle=
+        `rgba(255,80,140,${alpha})`;
+
+    ctx.shadowBlur=20;
+
+    ctx.shadowColor="#ff1765";
+
+    ctx.fill();
+
+    ctx.restore();
+
+}
+
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+function animate(time){
+
+    ctx.clearRect(0,0,W,H);
+
+    /* Background */
+
+    const bg=
+        ctx.createRadialGradient(
+            W/2,
+            H/2,
+            0,
+            W/2,
+            H/2,
+            Math.max(W,H)*.75
+        );
+
+    bg.addColorStop(0,"#270013");
+    bg.addColorStop(.4,"#0d0013");
+    bg.addColorStop(1,"#010005");
+
+    ctx.fillStyle=bg;
+
+    ctx.fillRect(0,0,W,H);
+
+
+    /* Stars */
+
+    for(const s of stars){
+
+        s.alpha+=s.speed;
+
+        const a=
+            .2+
+            Math.sin(s.alpha)*.5;
+
+        ctx.beginPath();
+
+        ctx.fillStyle=
+            `rgba(255,200,220,${a})`;
+
+        ctx.arc(
+            s.x,
+            s.y,
+            s.r,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+
+    /* Heart */
+
+    drawHeart(time);
+
+
+    /* Floating hearts */
+
+    for(let i=floating.length-1;i>=0;i--){
+
+        const f=floating[i];
+
+        f.y-=f.speed;
+        f.x+=f.drift;
+
+        f.life-=.0015;
+
+        miniHeart(
+            f.x,
+            f.y,
+            f.size,
+            f.life
+        );
+
+        if(f.y<-50){
+
+            floating.splice(i,1);
+
+        }
+
+    }
+
+
+    /* Meteors */
+
+    for(let i=meteors.length-1;i>=0;i--){
+
+        const m=meteors[i];
+
+        const g=
+            ctx.createLinearGradient(
+                m.x,
+                m.y,
+                m.x-m.length,
+                m.y+m.length
+            );
+
+        g.addColorStop(
+            0,
+            `rgba(255,255,255,${m.life})`
+        );
+
+        g.addColorStop(
+            1,
+            "transparent"
+        );
+
+        ctx.strokeStyle=g;
+
+        ctx.lineWidth=2;
+
+        ctx.beginPath();
+
+        ctx.moveTo(m.x,m.y);
+
+        ctx.lineTo(
+            m.x-m.length,
+            m.y+m.length
+        );
+
+        ctx.stroke();
+
+        m.x+=m.speed;
+        m.y+=m.speed;
+
+        m.life-=.018;
+
+        if(m.life<=0){
+
+            meteors.splice(i,1);
+
+        }
+
+    }
+
+
+    /* Explosions */
+
+    for(let i=explosions.length-1;i>=0;i--){
+
+        const p=explosions[i];
+
+        p.x+=p.vx;
+        p.y+=p.vy;
+
+        p.vx*=.97;
+        p.vy*=.97;
+
+        p.life-=.015;
+
+        ctx.beginPath();
+
+        ctx.fillStyle=
+            `rgba(255,60,130,${p.life})`;
+
+        ctx.shadowBlur=15;
+
+        ctx.shadowColor="#ff1765";
+
+        ctx.arc(
+            p.x,
+            p.y,
+            p.size,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+        if(p.life<=0){
+
+            explosions.splice(i,1);
+
+        }
+
+    }
+
+    ctx.shadowBlur=0;
+
+    requestAnimationFrame(animate);
+
+}
+
+requestAnimationFrame(animate);
+
+
+/* =====================================================
+   INTERACTION
+===================================================== */
+
+document.addEventListener("click",e=>{
+
+    explosion(e.clientX,e.clientY);
+
+});
+
+
+/* =====================================================
+   OPEN HEART
+===================================================== */
+
+function openHeart(){
+
+    explosion(W/2,H/2);
+
+    setTimeout(()=>{
+
+        document.getElementById("letter")
+        .classList.add("show");
+
+    },700);
+
+}
+
+
+/* =====================================================
+   CLOSE LETTER
+===================================================== */
+
+function closeLetter(){
+
+    document.getElementById("letter")
+    .classList.remove("show");
+
+    setTimeout(()=>{
+
+        document.getElementById("final")
+        .classList.add("show");
+
+        for(let i=0;i<15;i++){
+
+            setTimeout(()=>{
+
+                explosion(
+                    W/2+
+                    (Math.random()-.5)*300,
+
+                    H/2+
+                    (Math.random()-.5)*300
+                );
+
+            },i*150);
+
+        }
+
+    },900);
+
+}
+
+</script>
+
+</body>
 </html>
-
-
-
-
-
-
-
-
-
+```
